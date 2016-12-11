@@ -34,7 +34,7 @@ System.register(['angular2/core', 'angular2/router', './post.service', './spinne
                     this.isLoading = true;
                     this.posts = [];
                     this.comments = [];
-                    this.commentsLoaded = false;
+                    this.commentsIsLoading = true;
                     this.postHasBeenSelected = false;
                 }
                 PostsComponent.prototype.ngOnInit = function () {
@@ -44,13 +44,13 @@ System.register(['angular2/core', 'angular2/router', './post.service', './spinne
                 };
                 PostsComponent.prototype.clickSelection = function (post) {
                     this.postHasBeenSelected = true;
-                    this.commentsLoaded = false;
+                    this.commentsIsLoading = true;
                     this.selectedPost = post;
                     this.getComments(post);
                 };
                 PostsComponent.prototype.mouseoverSelection = function (post) {
                     if (this.postHasBeenSelected) {
-                        this.commentsLoaded = false;
+                        this.commentsIsLoading = true;
                         this.selectedPost = post;
                         this.getComments(post);
                     }
@@ -58,7 +58,7 @@ System.register(['angular2/core', 'angular2/router', './post.service', './spinne
                 PostsComponent.prototype.getComments = function (post) {
                     var _this = this;
                     this._postService.getPostComments(post.id)
-                        .subscribe(function (comments) { return _this.comments = comments; }, function (err) { return console.log('error getting comments'); }, function () { return _this.commentsLoaded = true; });
+                        .subscribe(function (comments) { return _this.comments = comments; }, function (err) { return console.log('error getting comments'); }, function () { return _this.commentsIsLoading = false; });
                 };
                 PostsComponent = __decorate([
                     core_1.Component({

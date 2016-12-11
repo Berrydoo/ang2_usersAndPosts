@@ -18,7 +18,8 @@
                     <div class="panel-body">
                         {{selectedPost.body}}
                     </div>
-                    <ul class="list-group" *ngIf="commentsLoaded">
+                    <spinner [visible]="commentsIsLoading" ></spinner>
+                    <ul class="list-group" *ngIf="!commentsIsLoading">
                         <li class="list-group-item" *ngFor="#comment of comments" >
                             <div class="media">
                                 <div class="media-left">

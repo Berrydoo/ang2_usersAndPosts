@@ -26,7 +26,7 @@ export class PostsComponent implements OnInit {
     isLoading = true;
     posts = [];
     comments = [];
-    commentsLoaded = false;
+    commentsIsLoading = true;
     postHasBeenSelected = false;
     selectedPost;
 
@@ -45,14 +45,14 @@ export class PostsComponent implements OnInit {
 
     clickSelection(post){
         this.postHasBeenSelected = true;
-        this.commentsLoaded = false;
+        this.commentsIsLoading = true;
         this.selectedPost = post;
         this.getComments(post);
     }
 
     mouseoverSelection(post){
         if ( this.postHasBeenSelected ){
-            this.commentsLoaded = false;
+            this.commentsIsLoading = true;
             this.selectedPost = post;
             this.getComments(post);
         }
@@ -63,7 +63,7 @@ export class PostsComponent implements OnInit {
             .subscribe( 
                 comments => this.comments = comments,
                 err => console.log('error getting comments'),
-                () => this.commentsLoaded = true
+                () => this.commentsIsLoading = false
             )
     }
 }
