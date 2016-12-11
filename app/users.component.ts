@@ -2,11 +2,12 @@ import {Component, OnInit} from 'angular2/core'
 import {Router, ROUTER_DIRECTIVES} from 'angular2/router'
 import {UserService} from './user.service'
 
+import {SpinnerComponent} from './spinner.component'
 
 @Component({
     templateUrl: 'app/users.component.html',
     providers:[UserService],
-    directives: [ROUTER_DIRECTIVES]
+    directives: [ROUTER_DIRECTIVES, SpinnerComponent]
 })
 export class UsersComponent implements OnInit {
     
