@@ -33,17 +33,28 @@ System.register(['angular2/core', 'angular2/router', './post.service', './spinne
                     this._router = _router;
                     this.isLoading = true;
                     this.posts = [];
+                    this.postHasBeenSelected = false;
                 }
                 PostsComponent.prototype.ngOnInit = function () {
                     var _this = this;
                     this._postService.getPosts()
                         .subscribe(function (posts) { return _this.posts = posts; }, function (err) { return console.log(err); }, function () { return _this.isLoading = false; });
                 };
+                PostsComponent.prototype.clickSelection = function (post) {
+                    this.postHasBeenSelected = true;
+                    this.selectedPost = post;
+                };
+                PostsComponent.prototype.mouseoverSelection = function (post) {
+                    if (this.postHasBeenSelected) {
+                        this.selectedPost = post;
+                    }
+                };
                 PostsComponent = __decorate([
                     core_1.Component({
                         templateUrl: 'app/posts.component.html',
                         providers: [post_service_1.PostService],
-                        directives: [router_1.ROUTER_DIRECTIVES, spinner_component_1.SpinnerComponent]
+                        directives: [router_1.ROUTER_DIRECTIVES, spinner_component_1.SpinnerComponent],
+                        styles: ["\n        .posts li { cursor: default}\n        .posts li:hover { background: #ecf0f1; }\n\n        .list-group-item.active,\n        .list-group-item.active:hover,\n        .list-group-item.active:focus {\n            background-color: #ecf0f1;\n            border-color: #ecf0f1;\n            color: #2c3e59;\n        } \n    "]
                     }), 
                     __metadata('design:paramtypes', [post_service_1.PostService, router_1.Router])
                 ], PostsComponent);

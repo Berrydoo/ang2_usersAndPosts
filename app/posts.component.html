@@ -3,9 +3,22 @@
     <div *ngIf="!isLoading">
         <div class="row">
             <div class="col-md-6">
-                <ul class="list-group" >
-                    <li class="list-group-item" *ngFor="#post of posts" >{{post.title}}</li>
+                <ul class="list-group posts" >
+                    <li class="list-group-item" *ngFor="#post of posts"
+                        [class.active]="selectedPost == post" 
+                        (mouseover)="mouseoverSelection(post)" 
+                        (click)="clickSelection(post)" >{{post.title}}</li>
                 </ul>
+            </div>
+            <div class="col-md-6" *ngIf="postHasBeenSelected">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">{{selectedPost.title}}</h3>
+                    </div>
+                    <div class="panel-body">
+                        {{selectedPost.body}}
+                    </div>
+                </div>
             </div>
          </div>   
     </div>
