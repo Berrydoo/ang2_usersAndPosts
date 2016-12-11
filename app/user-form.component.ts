@@ -7,10 +7,10 @@ import {UserService} from './user.service'
 import {User} from './user';
 
 @Component({
-    templateUrl:'app/new-user.component.html',
+    templateUrl:'app/user-form.component.html',
     providers:[UserService]
 })
-export class NewUserComponent implements CanDeactivate, OnInit {
+export class UserFormComponent implements CanDeactivate, OnInit {
 
     isSaving = false;
     form:ControlGroup;
@@ -46,7 +46,7 @@ export class NewUserComponent implements CanDeactivate, OnInit {
     ngOnInit(){
 
         this.userId = this._routeParams.get("id");
-        this.pageTitle = this.userId ? 'Add User' : 'Edit User';
+        this.pageTitle = this.userId == null ? 'Add User' : 'Edit User';
 
         if ( !this.userId )
             return;
@@ -71,17 +71,17 @@ export class NewUserComponent implements CanDeactivate, OnInit {
         return true;
     }
 
-    createUser(){
+    saveUser(){
 
         if ( this.user.id ){
-            this._userService.putUser(this.user)
+            this._userService.updateUser(this.user)
                 .subscribe( 
                     res => console.log('successful put'),
                     err => console.log('error on put'),
                     null
                 );
         } else {
-            this._userService.postUser(this.user) 
+            this._userService.addUser(this.user) 
                 .subscribe( 
                     res => console.log('successful post'),
                     err => console.log('error on post'),

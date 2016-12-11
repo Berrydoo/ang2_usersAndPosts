@@ -11,7 +11,7 @@ System.register(['angular2/core', 'angular2/common', 'angular2/router', './custo
         if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
     };
     var core_1, common_1, router_1, custom_validators_component_1, user_service_1, user_1;
-    var NewUserComponent;
+    var UserFormComponent;
     return {
         setters:[
             function (core_1_1) {
@@ -33,8 +33,8 @@ System.register(['angular2/core', 'angular2/common', 'angular2/router', './custo
                 user_1 = user_1_1;
             }],
         execute: function() {
-            NewUserComponent = (function () {
-                function NewUserComponent(_userService, _router, _routeParams, fb) {
+            UserFormComponent = (function () {
+                function UserFormComponent(_userService, _router, _routeParams, fb) {
                     this._userService = _userService;
                     this._router = _router;
                     this._routeParams = _routeParams;
@@ -55,10 +55,10 @@ System.register(['angular2/core', 'angular2/common', 'angular2/router', './custo
                         })
                     });
                 }
-                NewUserComponent.prototype.ngOnInit = function () {
+                UserFormComponent.prototype.ngOnInit = function () {
                     var _this = this;
                     this.userId = this._routeParams.get("id");
-                    this.pageTitle = this.userId ? 'Add User' : 'Edit User';
+                    this.pageTitle = this.userId == null ? 'Add User' : 'Edit User';
                     if (!this.userId)
                         return;
                     this.pageTitle = "Edit User";
@@ -69,35 +69,35 @@ System.register(['angular2/core', 'angular2/common', 'angular2/router', './custo
                         }
                     }, null);
                 };
-                NewUserComponent.prototype.routerCanDeactivate = function () {
+                UserFormComponent.prototype.routerCanDeactivate = function () {
                     // if ( !this.isSaving ){
                     //     return confirm('Are you sure you want to navigate away from this page?\nYou will lose unsaved changes.');
                     // }
                     return true;
                 };
-                NewUserComponent.prototype.createUser = function () {
+                UserFormComponent.prototype.saveUser = function () {
                     if (this.user.id) {
-                        this._userService.putUser(this.user)
+                        this._userService.updateUser(this.user)
                             .subscribe(function (res) { return console.log('successful put'); }, function (err) { return console.log('error on put'); }, null);
                     }
                     else {
-                        this._userService.postUser(this.user)
+                        this._userService.addUser(this.user)
                             .subscribe(function (res) { return console.log('successful post'); }, function (err) { return console.log('error on post'); }, null);
                     }
                     this.isSaving = true;
                     this._router.navigate(['Users']);
                 };
-                NewUserComponent = __decorate([
+                UserFormComponent = __decorate([
                     core_1.Component({
-                        templateUrl: 'app/new-user.component.html',
+                        templateUrl: 'app/user-form.component.html',
                         providers: [user_service_1.UserService]
                     }), 
                     __metadata('design:paramtypes', [user_service_1.UserService, router_1.Router, router_1.RouteParams, common_1.FormBuilder])
-                ], NewUserComponent);
-                return NewUserComponent;
+                ], UserFormComponent);
+                return UserFormComponent;
             }());
-            exports_1("NewUserComponent", NewUserComponent);
+            exports_1("UserFormComponent", UserFormComponent);
         }
     }
 });
-//# sourceMappingURL=new-user.component.js.map
+//# sourceMappingURL=user-form.component.js.map

@@ -5,15 +5,14 @@ import {HomeComponent} from './home.component'
 import {PostsComponent} from './posts.component'
 import {UsersComponent} from './users.component'
 import {NavBarComponent} from './navbar.component'
-import {NewUserComponent} from './new-user.component'
+import {UserFormComponent} from './user-form.component'
 import {NotFoundComponent} from './not-found.component'
 
 @RouteConfig([
     {path:'/', name:'Home', component:HomeComponent, useAsDefault:true},
     {path:'/users', name:'Users', component:UsersComponent},
-    {path:'/newUser', name:'NewUser', component:NewUserComponent},
-    {path:'/user/:id', name:'EditUser', component:NewUserComponent},
-    {path:'/user/delete/:id', name:'DeleteUser', component:NewUserComponent},
+    {path:'/newUser', name:'NewUser', component:UserFormComponent},
+    {path:'/user/:id', name:'EditUser', component:UserFormComponent},
     {path:'/posts', name:'Posts', component:PostsComponent},
     {path:'/notFound', name:'NotFound', component:NotFoundComponent},
     {path:'/*other', name:'Other', redirectTo:['Home']}

@@ -39,9 +39,22 @@ System.register(['angular2/core', 'angular2/router', './user.service'], function
                     this._userService.getUsers()
                         .subscribe(function (users) { return _this.users = users; }, function (err) { return console.log(err); }, function () { return _this.isLoading = false; });
                 };
+                UsersComponent.prototype.confirmDelete = function (user) {
+                    var _this = this;
+                    var deleteMe = confirm('Are you sure you want to delete this user?');
+                    if (deleteMe) {
+                        var index = this.users.indexOf(user);
+                        this.users.splice(index, 1);
+                        this._userService.deleteUser(user)
+                            .subscribe(function (res) { return console.log("successful deletion"); }, function (res) {
+                            console.log("User was not deleted, restoring to array");
+                            _this.users.splice(index, 0, user);
+                        }, null);
+                    }
+                };
                 UsersComponent = __decorate([
                     core_1.Component({
-                        template: "<h2>Users</h2>\n    <div *ngIf=\"isLoading\" >\n        <i class=\"fa fa-spinner fa-spin fa-3x\"></i>\n    </div>\n    <div *ngIf=\"!isLoading\">\n        <p>\n            <button class=\"btn btn-primary\" (click)=\"addUser()\">Add User</button>\n        </p>    \n        <table class=\"table table-bordered\">\n            <tr>\n                <th>Name</th>\n                <th>Email</th>\n                <th>Edit</th>\n                <th>Delete</th>\n            </tr>\n            <tr *ngFor=\"#user of users\" >\n                <td>{{user.name}}</td>\n                <td>{{user.email}}</td>\n                <td>\n                    <a [routerLink]=\"['EditUser', {id:user.id}]\" >\n                        <i class=\"glyphicon glyphicon-edit\"></i>\n                    </a>\n                </td>\n                <td>\n                    <a [routerLink]=\"['DeleteUser', {id:user.id}]\" >\n                        <i class=\"glyphicon glyphicon-remove\"></i>\n                    </a>\n                </td>\n            </tr>\n        </table>\n    </div>\n    ",
+                        templateUrl: 'app/users.component.html',
                         providers: [user_service_1.UserService],
                         directives: [router_1.ROUTER_DIRECTIVES]
                     }), 

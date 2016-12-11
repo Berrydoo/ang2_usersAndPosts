@@ -4,38 +4,7 @@ import {UserService} from './user.service'
 
 
 @Component({
-    template:`<h2>Users</h2>
-    <div *ngIf="isLoading" >
-        <i class="fa fa-spinner fa-spin fa-3x"></i>
-    </div>
-    <div *ngIf="!isLoading">
-        <p>
-            <button class="btn btn-primary" (click)="addUser()">Add User</button>
-        </p>    
-        <table class="table table-bordered">
-            <tr>
-                <th>Name</th>
-                <th>Email</th>
-                <th>Edit</th>
-                <th>Delete</th>
-            </tr>
-            <tr *ngFor="#user of users" >
-                <td>{{user.name}}</td>
-                <td>{{user.email}}</td>
-                <td>
-                    <a [routerLink]="['EditUser', {id:user.id}]" >
-                        <i class="glyphicon glyphicon-edit"></i>
-                    </a>
-                </td>
-                <td>
-                    <a [routerLink]="['DeleteUser', {id:user.id}]" >
-                        <i class="glyphicon glyphicon-remove"></i>
-                    </a>
-                </td>
-            </tr>
-        </table>
-    </div>
-    `,
+    templateUrl: 'app/users.component.html',
     providers:[UserService],
     directives: [ROUTER_DIRECTIVES]
 })
@@ -61,5 +30,24 @@ export class UsersComponent implements OnInit {
                 );
     }
 
+    confirmDelete( user ){
+        var deleteMe = confirm('Are you sure you want to delete this user?');
+        if ( deleteMe ){
+
+            var index = this.users.indexOf(user);
+            this.users.splice( index, 1 );
+
+            this._userService.deleteUser(user)
+                .subscribe(
+                    res => console.log(`successful deletion`),
+                    res => {
+                        console.log( `User was not deleted, restoring to array`);
+                        this.users.splice(index,0,user)
+                    },
+                    null
+                );
+
+        }
+    }
 
 }
