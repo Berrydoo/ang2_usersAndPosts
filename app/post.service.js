@@ -36,6 +36,10 @@ System.register(['angular2/core', 'angular2/http', 'rxjs/add/operator/map'], fun
                     return this._http.get(this.getServiceUrl(id))
                         .map(function (res) { return res.json(); });
                 };
+                PostService.prototype.getPostComments = function (id) {
+                    return this._http.get(this._url + "/" + id + "/comments")
+                        .map(function (post) { return post.json(); });
+                };
                 PostService.prototype.addPost = function (post) {
                     return this._http.post(this._url, JSON.stringify(post))
                         .map(function (res) { return res.json(); });

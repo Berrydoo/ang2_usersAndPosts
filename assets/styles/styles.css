@@ -2,3 +2,7 @@
 .clickable {
     cursor: pointer;
 }
+
+.round {
+    border-radius: 100%;
+}

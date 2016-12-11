@@ -21,6 +21,11 @@ export class PostService {
             .map(res => res.json());
     }
 
+    getPostComments(id:string){
+        return this._http.get( this._url + "/" + id + "/comments")
+                .map( post => post.json() );
+    }
+
     addPost( post ){
         return this._http.post(this._url, JSON.stringify(post) )
                 .map( res => res.json() );

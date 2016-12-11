@@ -18,6 +18,23 @@
                     <div class="panel-body">
                         {{selectedPost.body}}
                     </div>
+                    <ul class="list-group" *ngIf="commentsLoaded">
+                        <li class="list-group-item" *ngFor="#comment of comments" >
+                            <div class="media">
+                                <div class="media-left">
+                                    <a href="#">
+                                        <img class="media-object round" 
+                                                src="http://lorempixel.com/80/80/people?random={{comment.id}}" >
+                                    </a>
+                                </div>
+                                <div class="media-body">
+                                    <h4 class="media-heading">{{ comment.name }}</h4>
+                                    {{ comment.body }}
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+
                 </div>
             </div>
          </div>   
