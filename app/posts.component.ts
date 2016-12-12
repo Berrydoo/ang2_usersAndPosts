@@ -1,12 +1,14 @@
 import {Component, OnInit} from 'angular2/core'
 import {Router, ROUTER_DIRECTIVES} from 'angular2/router'
+
 import {PostService} from './post.service'
+import {UserService} from './user.service';
 
 import {SpinnerComponent} from './spinner.component'
 
 @Component({
     templateUrl:'app/posts.component.html',
-    providers:[PostService],
+    providers:[PostService, UserService],
     directives: [ROUTER_DIRECTIVES, SpinnerComponent], 
     styles:[`
         .posts li { cursor: default}
@@ -23,24 +25,52 @@ import {SpinnerComponent} from './spinner.component'
 })
 export class PostsComponent implements OnInit {
 
-    isLoading = true;
+    postsIsLoading;
     posts = [];
-    comments = [];
-    commentsIsLoading = true;
     postHasBeenSelected = false;
     selectedPost;
 
+    commentsIsLoading = true;
+    comments = [];
+    
+    users = [];
+    selectedUserId = 0;
+
     constructor( 
         private _postService:PostService,
+        private _userService:UserService,
         private _router:Router ){}
 
     ngOnInit(){
-        this._postService.getPosts()
+        this.getPosts();
+        this.getUsers();
+    }
+
+    private getUsers(){
+        this._userService.getUsers()
+            .subscribe(
+                users => this.users = users, 
+                err => console.log(err),
+                null
+            )
+
+    }
+
+    private getPosts(filter?){
+        this.postsIsLoading = true;
+        this.commentsIsLoading = true;
+        this.postHasBeenSelected = false;
+
+        if ( filter && filter.userId ){
+            this.selectedUserId = filter.userId;
+        }
+
+        this._postService.getPosts(filter)
             .subscribe( 
                 posts => this.posts = posts,
                 err => console.log(err),
-                () => this.isLoading = false
-            )
+                () => this.postsIsLoading = false
+            );
     }
 
     clickSelection(post){

@@ -11,16 +11,19 @@ export class PostService {
     
     constructor(private _http: Http){}
     
-    getPosts() {
-        return this._http.get(this._url)
+    getPosts(filter?) {
+
+        var url = this._url;
+        if ( filter && filter.userId ){
+            url += "?userId=" + filter.userId;
+        } else if ( filter && filter.page ){
+            url += "?_page=" + filter.page;
+        }
+
+        return this._http.get(url)
             .map(res => res.json());
     }
     
-    getPost(id:string){
-        return this._http.get(this.getServiceUrl(id) )
-            .map(res => res.json());
-    }
-
     getPostComments(id:string){
         return this._http.get( this._url + "/" + id + "/comments")
                 .map( post => post.json() );
