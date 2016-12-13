@@ -3,6 +3,7 @@ import {Router, ROUTER_DIRECTIVES} from 'angular2/router'
 import {UserService} from './user.service'
 
 import {SpinnerComponent} from '../shared/spinner.component'
+import {UtilComponent} from '../shared/util.component'
 
 @Component({
     templateUrl: 'app/users/users.component.html',
@@ -27,7 +28,10 @@ export class UsersComponent implements OnInit {
                 .subscribe( 
                     users => this.users = users,
                     err => console.log(err),
-                    () => this.isLoading = false
+                    () => {
+                        this.isLoading = false;
+                        this.users = UtilComponent.sortUsers(this.users);
+                    }
                 );
     }
 
@@ -47,7 +51,6 @@ export class UsersComponent implements OnInit {
                     },
                     null
                 );
-
         }
     }
 

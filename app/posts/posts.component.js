@@ -1,4 +1,4 @@
-System.register(['angular2/core', 'angular2/router', './post.service', '../users/user.service', '../shared/spinner.component', '../shared/pagination.component'], function(exports_1, context_1) {
+System.register(['angular2/core', 'angular2/router', './post.service', '../users/user.service', '../shared/spinner.component', '../shared/pagination.component', '../shared/util.component'], function(exports_1, context_1) {
     "use strict";
     var __moduleName = context_1 && context_1.id;
     var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
@@ -10,7 +10,7 @@ System.register(['angular2/core', 'angular2/router', './post.service', '../users
     var __metadata = (this && this.__metadata) || function (k, v) {
         if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
     };
-    var core_1, router_1, post_service_1, user_service_1, spinner_component_1, pagination_component_1;
+    var core_1, router_1, post_service_1, user_service_1, spinner_component_1, pagination_component_1, util_component_1;
     var PostsComponent;
     return {
         setters:[
@@ -31,6 +31,9 @@ System.register(['angular2/core', 'angular2/router', './post.service', '../users
             },
             function (pagination_component_1_1) {
                 pagination_component_1 = pagination_component_1_1;
+            },
+            function (util_component_1_1) {
+                util_component_1 = util_component_1_1;
             }],
         execute: function() {
             PostsComponent = (function () {
@@ -54,7 +57,7 @@ System.register(['angular2/core', 'angular2/router', './post.service', '../users
                 PostsComponent.prototype.getUsers = function () {
                     var _this = this;
                     this._userService.getUsers()
-                        .subscribe(function (users) { return _this.users = users; }, function (err) { return console.log(err); }, null);
+                        .subscribe(function (users) { return _this.users = users; }, function (err) { return console.log(err); }, function () { return _this.users = util_component_1.UtilComponent.sortUsers(_this.users); });
                 };
                 PostsComponent.prototype.getPosts = function (filter) {
                     var _this = this;

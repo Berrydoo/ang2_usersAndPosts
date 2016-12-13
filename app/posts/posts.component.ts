@@ -6,6 +6,7 @@ import {UserService} from '../users/user.service';
 
 import {SpinnerComponent} from '../shared/spinner.component'
 import {PaginationComponent} from '../shared/pagination.component'
+import {UtilComponent} from '../shared/util.component'
 
 @Component({
     templateUrl:'app/posts/posts.component.html',
@@ -55,9 +56,8 @@ export class PostsComponent implements OnInit {
             .subscribe(
                 users => this.users = users, 
                 err => console.log(err),
-                null
+                () => this.users = UtilComponent.sortUsers(this.users)
             )
-
     }
 
     private getPosts(filter?){
@@ -80,7 +80,6 @@ export class PostsComponent implements OnInit {
                 err => console.log(err),
                 () => this.postsIsLoading = false
             );
-
     }
 
     clickSelection(post){

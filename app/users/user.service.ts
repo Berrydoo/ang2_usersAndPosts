@@ -12,8 +12,8 @@ export class UserService {
     constructor(private _http: Http){}
     
     getUsers() {
-        return this._http.get(this._url)
-            .map(res => res.json());
+         return this._http.get(this._url)
+             .map(res => res.json());
     }
     
     getUser(id:string){

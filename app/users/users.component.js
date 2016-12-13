@@ -1,4 +1,4 @@
-System.register(['angular2/core', 'angular2/router', './user.service', '../shared/spinner.component'], function(exports_1, context_1) {
+System.register(['angular2/core', 'angular2/router', './user.service', '../shared/spinner.component', '../shared/util.component'], function(exports_1, context_1) {
     "use strict";
     var __moduleName = context_1 && context_1.id;
     var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
@@ -10,7 +10,7 @@ System.register(['angular2/core', 'angular2/router', './user.service', '../share
     var __metadata = (this && this.__metadata) || function (k, v) {
         if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
     };
-    var core_1, router_1, user_service_1, spinner_component_1;
+    var core_1, router_1, user_service_1, spinner_component_1, util_component_1;
     var UsersComponent;
     return {
         setters:[
@@ -25,6 +25,9 @@ System.register(['angular2/core', 'angular2/router', './user.service', '../share
             },
             function (spinner_component_1_1) {
                 spinner_component_1 = spinner_component_1_1;
+            },
+            function (util_component_1_1) {
+                util_component_1 = util_component_1_1;
             }],
         execute: function() {
             UsersComponent = (function () {
@@ -40,7 +43,10 @@ System.register(['angular2/core', 'angular2/router', './user.service', '../share
                 UsersComponent.prototype.ngOnInit = function () {
                     var _this = this;
                     this._userService.getUsers()
-                        .subscribe(function (users) { return _this.users = users; }, function (err) { return console.log(err); }, function () { return _this.isLoading = false; });
+                        .subscribe(function (users) { return _this.users = users; }, function (err) { return console.log(err); }, function () {
+                        _this.isLoading = false;
+                        _this.users = util_component_1.UtilComponent.sortUsers(_this.users);
+                    });
                 };
                 UsersComponent.prototype.confirmDelete = function (user) {
                     var _this = this;
