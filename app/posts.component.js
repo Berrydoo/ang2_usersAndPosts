@@ -1,4 +1,4 @@
-System.register(['angular2/core', 'angular2/router', './post.service', './user.service', './spinner.component'], function(exports_1, context_1) {
+System.register(['angular2/core', 'angular2/router', './post.service', './user.service', './spinner.component', './pagination.component'], function(exports_1, context_1) {
     "use strict";
     var __moduleName = context_1 && context_1.id;
     var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
@@ -10,7 +10,7 @@ System.register(['angular2/core', 'angular2/router', './post.service', './user.s
     var __metadata = (this && this.__metadata) || function (k, v) {
         if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
     };
-    var core_1, router_1, post_service_1, user_service_1, spinner_component_1;
+    var core_1, router_1, post_service_1, user_service_1, spinner_component_1, pagination_component_1;
     var PostsComponent;
     return {
         setters:[
@@ -28,6 +28,9 @@ System.register(['angular2/core', 'angular2/router', './post.service', './user.s
             },
             function (spinner_component_1_1) {
                 spinner_component_1 = spinner_component_1_1;
+            },
+            function (pagination_component_1_1) {
+                pagination_component_1 = pagination_component_1_1;
             }],
         execute: function() {
             PostsComponent = (function () {
@@ -36,11 +39,13 @@ System.register(['angular2/core', 'angular2/router', './post.service', './user.s
                     this._userService = _userService;
                     this._router = _router;
                     this.posts = [];
+                    this.pagedPosts = [];
                     this.postHasBeenSelected = false;
                     this.commentsIsLoading = true;
                     this.comments = [];
                     this.users = [];
                     this.selectedUserId = 0;
+                    this.pageSize = 10;
                 }
                 PostsComponent.prototype.ngOnInit = function () {
                     this.getPosts();
@@ -60,7 +65,10 @@ System.register(['angular2/core', 'angular2/router', './post.service', './user.s
                         this.selectedUserId = filter.userId;
                     }
                     this._postService.getPosts(filter)
-                        .subscribe(function (posts) { return _this.posts = posts; }, function (err) { return console.log(err); }, function () { return _this.postsIsLoading = false; });
+                        .subscribe(function (posts) {
+                        _this.posts = posts;
+                        _this.pagedPosts = _.take(_this.posts, _this.pageSize);
+                    }, function (err) { return console.log(err); }, function () { return _this.postsIsLoading = false; });
                 };
                 PostsComponent.prototype.clickSelection = function (post) {
                     this.postHasBeenSelected = true;
@@ -80,11 +88,22 @@ System.register(['angular2/core', 'angular2/router', './post.service', './user.s
                     this._postService.getPostComments(post.id)
                         .subscribe(function (comments) { return _this.comments = comments; }, function (err) { return console.log('error getting comments'); }, function () { return _this.commentsIsLoading = false; });
                 };
+                PostsComponent.prototype.showPostsForTab = function (tabNum) {
+                    var start = this.calculateStartIndex(tabNum);
+                    var end = this.calculateEndIndex(tabNum);
+                    this.pagedPosts = _.take(_.rest(this.posts, start), this.pageSize);
+                };
+                PostsComponent.prototype.calculateStartIndex = function (tabNum) {
+                    return this.pageSize * (tabNum - 1);
+                };
+                PostsComponent.prototype.calculateEndIndex = function (tabNum) {
+                    return this.pageSize * (tabNum - 1) + this.pageSize - 1;
+                };
                 PostsComponent = __decorate([
                     core_1.Component({
                         templateUrl: 'app/posts.component.html',
                         providers: [post_service_1.PostService, user_service_1.UserService],
-                        directives: [router_1.ROUTER_DIRECTIVES, spinner_component_1.SpinnerComponent],
+                        directives: [router_1.ROUTER_DIRECTIVES, spinner_component_1.SpinnerComponent, pagination_component_1.PaginationComponent],
                         styles: ["\n        .posts li { cursor: default}\n        .posts li:hover { background: #ecf0f1; }\n\n        .list-group-item.active,\n        .list-group-item.active:hover,\n        .list-group-item.active:focus {\n            background-color: #ecf0f1;\n            border-color: #ecf0f1;\n            color: #2c3e59;\n        } \n    "]
                     }), 
                     __metadata('design:paramtypes', [post_service_1.PostService, user_service_1.UserService, router_1.Router])

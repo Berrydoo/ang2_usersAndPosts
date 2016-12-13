@@ -20,11 +20,29 @@ System.register(['angular2/core'], function(exports_1, context_1) {
         execute: function() {
             PaginationComponent = (function () {
                 function PaginationComponent() {
+                    this.items = [];
+                    this.pageSize = 10;
+                    this.numberOfTabs = 0;
+                    this.currentTab = 1;
                 }
+                PaginationComponent.prototype.ngOnInit = function () {
+                    this.numberOfTabs = this.getNumberOfTabs();
+                };
+                PaginationComponent.prototype.getNumberOfTabs = function () {
+                    return Math.ceil(this.items.length / this.pageSize);
+                };
+                __decorate([
+                    core_1.Input(), 
+                    __metadata('design:type', Object)
+                ], PaginationComponent.prototype, "items", void 0);
+                __decorate([
+                    core_1.Input(), 
+                    __metadata('design:type', Object)
+                ], PaginationComponent.prototype, "pageSize", void 0);
                 PaginationComponent = __decorate([
                     core_1.Component({
                         selector: 'pagination',
-                        template: "\n    <nav aria-label=\"Page navigation\">\n        <ul class=\"pagination\">\n            <li>\n            <a href=\"#\" aria-label=\"Previous\">\n                <span aria-hidden=\"true\">&laquo;</span>\n            </a>\n            </li>\n            <li><a href=\"#\">1</a></li>\n            <li><a href=\"#\">2</a></li>\n            <li><a href=\"#\">3</a></li>\n            <li><a href=\"#\">4</a></li>\n            <li><a href=\"#\">5</a></li>\n            <li>\n            <a href=\"#\" aria-label=\"Next\">\n                <span aria-hidden=\"true\">&raquo;</span>\n            </a>\n            </li>\n        </ul>\n    </nav>\n    "
+                        template: "\n    <nav aria-label=\"Page navigation\" *ngIf=\"numberOfTabs > 1\">\n        <ul class=\"pagination\">\n            <li>\n            <a href=\"#\" aria-label=\"Previous\" [class.disabled]=\"currentTab == 1\">\n                <span aria-hidden=\"true\">&laquo;</span>\n            </a>\n            </li>\n            <li *ngFor=\"#tab of numberOfTabs\" [class.active]=\"tab == currentTab\" >\n                <a href=\"#\">{{tab}}</a>\n            </li>\n            <li>\n            <a href=\"#\" aria-label=\"Next\" [class.disabled]=\"currentTab == numberOfTabs\" >\n                <span aria-hidden=\"true\">&raquo;</span>\n            </a>\n            </li>\n        </ul>\n    </nav>\n    "
                     }), 
                     __metadata('design:paramtypes', [])
                 ], PaginationComponent);

@@ -5,11 +5,12 @@ import {PostService} from './post.service'
 import {UserService} from './user.service';
 
 import {SpinnerComponent} from './spinner.component'
+import {PaginationComponent} from './pagination.component'
 
 @Component({
     templateUrl:'app/posts.component.html',
     providers:[PostService, UserService],
-    directives: [ROUTER_DIRECTIVES, SpinnerComponent], 
+    directives: [ROUTER_DIRECTIVES, SpinnerComponent, PaginationComponent], 
     styles:[`
         .posts li { cursor: default}
         .posts li:hover { background: #ecf0f1; }
@@ -27,6 +28,7 @@ export class PostsComponent implements OnInit {
 
     postsIsLoading;
     posts = [];
+    pagedPosts = [];
     postHasBeenSelected = false;
     selectedPost;
 
@@ -35,6 +37,8 @@ export class PostsComponent implements OnInit {
     
     users = [];
     selectedUserId = 0;
+
+    pageSize = 10;
 
     constructor( 
         private _postService:PostService,
@@ -67,10 +71,14 @@ export class PostsComponent implements OnInit {
 
         this._postService.getPosts(filter)
             .subscribe( 
-                posts => this.posts = posts,
+                posts =>{
+                    this.posts = posts;
+                    this.pagedPosts = _.take(this.posts, this.pageSize);
+                }, 
                 err => console.log(err),
                 () => this.postsIsLoading = false
             );
+
     }
 
     clickSelection(post){
@@ -95,5 +103,21 @@ export class PostsComponent implements OnInit {
                 err => console.log('error getting comments'),
                 () => this.commentsIsLoading = false
             )
+    }
+
+    showPostsForTab( tabNum ){
+
+        var start = this.calculateStartIndex( tabNum );
+        var end = this.calculateEndIndex( tabNum );
+        this.pagedPosts = _.take( _.rest(this.posts, start), this.pageSize);
+
+    }
+
+    private calculateStartIndex( tabNum ){
+        return this.pageSize * (tabNum - 1);
+    }
+
+    private calculateEndIndex( tabNum ){
+        return this.pageSize * (tabNum-1) + this.pageSize - 1; 
     }
 }
