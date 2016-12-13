@@ -2,13 +2,13 @@ import {Component, OnInit} from 'angular2/core'
 import {Router, ROUTER_DIRECTIVES} from 'angular2/router'
 
 import {PostService} from './post.service'
-import {UserService} from './user.service';
+import {UserService} from '../users/user.service';
 
-import {SpinnerComponent} from './spinner.component'
-import {PaginationComponent} from './pagination.component'
+import {SpinnerComponent} from '../shared/spinner.component'
+import {PaginationComponent} from '../shared/pagination.component'
 
 @Component({
-    templateUrl:'app/posts.component.html',
+    templateUrl:'app/posts/posts.component.html',
     providers:[PostService, UserService],
     directives: [ROUTER_DIRECTIVES, SpinnerComponent, PaginationComponent], 
     styles:[`
@@ -67,6 +67,8 @@ export class PostsComponent implements OnInit {
 
         if ( filter && filter.userId ){
             this.selectedUserId = filter.userId;
+        } else {
+            this.selectedUserId = 0;
         }
 
         this._postService.getPosts(filter)
@@ -110,6 +112,7 @@ export class PostsComponent implements OnInit {
         var start = this.calculateStartIndex( tabNum );
         var end = this.calculateEndIndex( tabNum );
         this.pagedPosts = _.take( _.rest(this.posts, start), this.pageSize);
+        this.postHasBeenSelected = false;
 
     }
 
